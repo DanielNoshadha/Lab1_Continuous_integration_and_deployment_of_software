@@ -17,14 +17,19 @@ color_1 = '#0094ff' # color of walls on a map
 color_2 = 'white'   # color of small dots
 color_3 = '#fff5cc' # color of big dots
 
+direction = 0      # direction variable
+counter = 0        # counter variable
+packman_x = 450    # x position variable
+packman_y = 663    # y position variable
 
-player_images = []
-if os.path.exists("assets/player") == True:
+
+player_images = []  # set of player images
+if os.path.exists("assets/player") == True:  # check if path exists because of different platforms (this one for Mac)
     for i in range(1, 4):  # adding a ll packman animation frames
-        player_images.append(pygame.transform.scale(pygame.image.load(f'assets/player/{i}.png'), (45, 45)))
-else:
+        player_images.append(pygame.transform.scale(pygame.image.load(f'assets/player/{i}.png'), (45, 45)))  # scailing and adding player image
+else:  # (this one for Windows)
     for i in range(1, 4):  # adding a ll packman animation frames
-        player_images.append(pygame.transform.scale(pygame.image.load(f'assets\player\{i}.png'), (45, 45)))
+        player_images.append(pygame.transform.scale(pygame.image.load(f'assets\player\{i}.png'), (45, 45)))  # scailing and adding player image
 
 
 
@@ -70,14 +75,31 @@ def draw_board():   # function to draw map
 
 
 def draw_player():
-
-    pass
+    # 0 - right,
+    # 1 - left,
+    # 2 - up,
+    # 3 - down
+    if direction == 0:  # PacMan looks right,
+        screen.blit(player_images[counter // 8], (packman_x, packman_y))   # placing PacMan in such position and with no transformations
+    elif direction == 1:  # PacMan looks left,
+        screen.blit(pygame.transform.flip(player_images[counter // 8], True, False), (packman_x, packman_y))   # placing PacMan in such position and flip the image
+    elif direction == 2:  # PacMan looks up,
+        screen.blit(pygame.transform.rotate(player_images[counter // 8], 90), (packman_x, packman_y))   # placing PacMan in such position and rotate 90 degrees
+    elif direction == 3:  # PacMan looks down,
+        screen.blit(pygame.transform.rotate(player_images[counter // 8], 270), (packman_x, packman_y))   # placing PacMan in such position and rotate 270 degrees
 
 run = True
 while run:
     timer.tick(fps)
+
+    if counter < 23:
+        counter += 1
+    else:
+        counter = 0
+
     screen.fill('black')
     draw_board()
+    draw_player()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
