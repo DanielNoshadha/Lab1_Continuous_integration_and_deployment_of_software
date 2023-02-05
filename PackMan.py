@@ -1,6 +1,7 @@
 import pygame             # importing pygame
 from board import lvl_1   # importing made board lvl_1 from board
-import os
+from pathlib import Path
+
 pygame.init()             # initialise all pygame modules
 
 #Game Window
@@ -22,16 +23,11 @@ counter = 0        # counter variable
 packman_x = 450    # x position variable
 packman_y = 663    # y position variable
 
-
 player_images = []  # set of player images
-if os.path.exists("assets/player") == True:  # check if path exists because of different platforms (this one for Mac)
-    for i in range(1, 4):  # adding a ll packman animation frames
-        player_images.append(pygame.transform.scale(pygame.image.load(f'assets/player/{i}.png'), (45, 45)))  # scailing and adding player image
-else:  # (this one for Windows)
-    for i in range(1, 4):  # adding a ll packman animation frames
-        player_images.append(pygame.transform.scale(pygame.image.load(f'assets\player\{i}.png'), (45, 45)))  # scailing and adding player image
-
-
+player_assets = Path('assets/player/') # path to player's assets
+for i in range(1, 4):  # adding all packman animation frames
+    player_frames = player_assets / f'{i}.png'
+    player_images.append(pygame.transform.scale(pygame.image.load(player_frames), (45, 45)))  # scailing and adding player image
 
 def draw_board():   # function to draw map
     height_tile = ((height - 50) // 32) # height specialy for tile ( /32 because in original pacman there are 32 different vertical tiles)
@@ -72,7 +68,6 @@ def draw_board():   # function to draw map
             # drawing gates
             if level[i][j] == 9:   # if element in board equals 9 then as we already described in file for us we draw gates for ghosts
                 pygame.draw.line(screen, color_2, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3)
-
 
 def draw_player():
     # 0 - right,
