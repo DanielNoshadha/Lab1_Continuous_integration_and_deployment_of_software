@@ -22,11 +22,12 @@ direction = 0      # direction variable
 counter = 0        # counter variable
 packman_x = 450    # x position variable
 packman_y = 663    # y position variable
+flicker = False
 
 # R, L, U, D
 turns_allowed = [False, False, False, False]
-
-flicker = False
+direction_command = 0
+packman_speed = 2
 
 player_images = []  # set of player images
 player_assets = Path('assets/player/') # path to player's assets
@@ -86,7 +87,7 @@ def draw_player():
     elif direction == 2:  # PacMan looks up,
         screen.blit(pygame.transform.rotate(player_images[counter // 5], 90), (packman_x, packman_y))   # placing PacMan in such position and rotate 90 degrees
     elif direction == 3:  # PacMan looks down,
-        screen.blit(pygame.transform.rotate(player_images[counter // 5], 270), (packman_x, packman_y))   # placing PacMan in such position and rotate 270 degrees
+        screen.blit(pygame.transform.rotate(player_images[counter // 5], -90), (packman_x, packman_y))   # placing PacMan in such position and rotate 270 degrees
 
 def check_position(centerx, centery):
     turns = [False, False, False, False]
@@ -136,6 +137,18 @@ def check_position(centerx, centery):
 
     return turns
 
+def move_packman(player_x, player_y):
+    # R, L, U, D
+    if direction == 0 and turns_allowed[0]:
+        player_x += packman_speed
+    elif direction == 1 and turns_allowed[1]:
+        player_x -= packman_speed
+    if direction == 2 and turns_allowed[2]:
+        player_y -= packman_speed
+    elif direction == 3 and turns_allowed[3]:
+        player_y += packman_speed
+    return player_x, player_y
+
 run = True
 while run:
     timer.tick(fps)
@@ -153,19 +166,43 @@ while run:
     center_x = packman_x + 23
     center_y = packman_y + 24
     turns_allowed = check_position(center_x, center_y)
+    packman_x, packman_y = move_packman(packman_x, packman_y)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
-                direction = 0
+                direction_command = 0
             if event.key == pygame.K_LEFT:
-                direction = 1
+                direction_command = 1
             if event.key == pygame.K_UP:
-                direction = 2
+                direction_command = 2
             if event.key == pygame.K_DOWN:
-                direction = 3
+                direction_command = 3
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_RIGHT and direction_command == 0:
+                direction_command = direction
+            if event.key == pygame.K_LEFT and direction_command == 1:
+                direction_command = direction
+            if event.key == pygame.K_UP and direction_command == 2:
+                direction_command = direction
+            if event.key == pygame.K_DOWN and direction_command == 3:
+                direction_command = direction
+
+    if direction_command == 0 and turns_allowed[0]:
+        direction = 0
+    if direction_command == 1 and turns_allowed[1]:
+        direction = 1
+    if direction_command == 2 and turns_allowed[2]:
+        direction = 2
+    if direction_command == 3 and turns_allowed[3]:
+        direction = 3
+
+    if packman_x > 900:
+        packman_x = -47
+    elif packman_x < -50:
+        packman_x = 897
 
     pygame.display.flip()
 pygame.quit()
