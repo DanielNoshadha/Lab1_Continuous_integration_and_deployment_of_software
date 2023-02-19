@@ -28,12 +28,14 @@ flicker = False
 turns_allowed = [False, False, False, False]
 direction_command = 0
 packman_speed = 2
+score = 0
 
 player_images = []  # set of player images
 player_assets = Path('assets/player/') # path to player's assets
 for i in range(1, 5):  # adding all packman animation frames
     player_frames = player_assets / f'{i}.png'
     player_images.append(pygame.transform.scale(pygame.image.load(player_frames), (45, 45)))  # scailing and adding player image
+
 
 def draw_board():   # function to draw map
     height_tile = ((height - 50) // 32) # height specialy for tile ( /32 because in original pacman there are 32 different vertical tiles)
@@ -75,6 +77,7 @@ def draw_board():   # function to draw map
             if level[i][j] == 9:   # if element in board equals 9 then as we already described in file for us we draw gates for ghosts
                 pygame.draw.line(screen, color_2, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3)
 
+
 def draw_player():
     # 0 - right,
     # 1 - left,
@@ -88,6 +91,7 @@ def draw_player():
         screen.blit(pygame.transform.rotate(player_images[counter // 5], 90), (packman_x, packman_y))   # placing PacMan in such position and rotate 90 degrees
     elif direction == 3:  # PacMan looks down,
         screen.blit(pygame.transform.rotate(player_images[counter // 5], -90), (packman_x, packman_y))   # placing PacMan in such position and rotate 270 degrees
+
 
 def check_position(centerx, centery):
     turns = [False, False, False, False]
@@ -137,6 +141,20 @@ def check_position(centerx, centery):
 
     return turns
 
+
+def check_collision(score):
+    height_tile = ((height - 50) // 32)
+    width_tile = (width // 30)
+    if 0 < packman_x < 870:
+        if level[center_y // height_tile][center_x // width_tile] == 1:
+            level[center_y // height_tile][center_x // width_tile] = 0
+            score += 10
+        if level[center_y // height_tile][center_x // width_tile] == 2:
+            level[center_y // height_tile][center_x // width_tile] = 0
+            score += 100
+    return score
+
+
 def move_packman(player_x, player_y):
     # R, L, U, D
     if direction == 0 and turns_allowed[0]:
@@ -148,6 +166,15 @@ def move_packman(player_x, player_y):
     elif direction == 3 and turns_allowed[3]:
         player_y += packman_speed
     return player_x, player_y
+
+
+def draw_stuff():
+    '''
+    shows score at the bottom left corner
+    '''
+    score_text = font.render(f'Score: {score}', True, 'white')
+    screen.blit(score_text, (10, 920))
+
 
 run = True
 while run:
@@ -163,10 +190,12 @@ while run:
     screen.fill('black')
     draw_board()
     draw_player()
+    draw_stuff()
     center_x = packman_x + 23
     center_y = packman_y + 24
     turns_allowed = check_position(center_x, center_y)
     packman_x, packman_y = move_packman(packman_x, packman_y)
+    score = check_collision(score)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -190,15 +219,10 @@ while run:
             if event.key == pygame.K_DOWN and direction_command == 3:
                 direction_command = direction
 
-    if direction_command == 0 and turns_allowed[0]:
-        direction = 0
-    if direction_command == 1 and turns_allowed[1]:
-        direction = 1
-    if direction_command == 2 and turns_allowed[2]:
-        direction = 2
-    if direction_command == 3 and turns_allowed[3]:
-        direction = 3
-
+    for i in range(4):
+        if direction_command == i and turns_allowed[i]:
+            direction = i
+    # this part of code teleports player from right to left and vice versa if they've got to the part of the map where it's possible
     if packman_x > 900:
         packman_x = -47
     elif packman_x < -50:
