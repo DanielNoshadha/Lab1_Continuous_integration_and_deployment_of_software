@@ -50,7 +50,7 @@ blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Red_Ghost
 pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Pink_Ghost.png'), (45, 45))
 inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Aqua_Ghost.png'), (45, 45))
 clyde_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Orange_Ghost.png'), (45, 45))
-spooked_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'powerup.png'), (45, 45))
+spooked_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Spooked_Ghost.png'), (45, 45))
 dead_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'dead.png'), (45, 45))
 
 blinky_x = 440
@@ -208,7 +208,7 @@ def check_position(centerx, centery):
     return turns
 
 # ---------------- Check collision ----------------
-def check_collision(score):
+def check_collision(score, powerup, powerup_counter, eaten_ghosts):
     height_tile = ((height - 50) // 32)     # height of a tile
     width_tile = (width // 30)              # width of a tile
     if 0 < packman_x < 870:
@@ -241,8 +241,8 @@ def draw_stuff():
     '''
     shows score at the bottom left corner, blue circle if the powerup is active
     '''
-    screen.blit(score_text, (10, 920))
     score_text = font.render(f'Score: {score}', True, 'white')
+    screen.blit(score_text, (10, 920))
     if powerup:
         pygame.draw.circle(screen, 'blue', (140, 930), 15)
     for i in range(lives):
