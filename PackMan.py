@@ -29,6 +29,12 @@ turns_allowed = [False, False, False, False]
 direction_command = 0
 packman_speed = 2
 score = 0
+powerup = False
+powerup_counter = 0
+eaten_ghosts = [False, False, False, False]
+moving = False
+startup_counter = 0
+lives = 3
 
 player_images = []  # set of player images
 player_assets = Path('assets/player/') # path to player's assets
@@ -142,7 +148,7 @@ def check_position(centerx, centery):
     return turns
 
 
-def check_collision(score):
+def check_collision(score, powerup, powerup_counter, eaten_ghosts):
     height_tile = ((height - 50) // 32)
     width_tile = (width // 30)
     if 0 < packman_x < 870:
@@ -152,7 +158,10 @@ def check_collision(score):
         if level[center_y // height_tile][center_x // width_tile] == 2:
             level[center_y // height_tile][center_x // width_tile] = 0
             score += 100
-    return score
+            powerup = True
+            powerup_counter = 0
+            eaten_ghosts = [False, False, False, False]
+    return score, powerup, powerup_counter, eaten_ghosts
 
 
 def move_packman(player_x, player_y):
@@ -170,10 +179,14 @@ def move_packman(player_x, player_y):
 
 def draw_stuff():
     '''
-    shows score at the bottom left corner
+    shows score at the bottom left corner, blue circle if the powerup is active
     '''
     score_text = font.render(f'Score: {score}', True, 'white')
     screen.blit(score_text, (10, 920))
+    if powerup:
+        pygame.draw.circle(screen, 'blue', (140, 930), 15)
+    for i in range(lives):
+        screen.blit(pygame.transform.scale(player_images[0], (30, 30)), (650 + i * 40, 915))
 
 
 run = True
@@ -186,6 +199,17 @@ while run:
             flicker = False
     else:
         counter = 0
+    if powerup and powerup_counter < 600:
+        powerup_counter += 1
+    elif powerup and powerup_counter >= 600:
+        powerup_counter = 0
+        powerup = False
+        eaten_ghosts = [False, False, False, False]
+    if startup_counter < 180:
+        moving = False
+        startup_counter += 1
+    else:
+        moving = True
 
     screen.fill('black')
     draw_board()
@@ -194,8 +218,9 @@ while run:
     center_x = packman_x + 23
     center_y = packman_y + 24
     turns_allowed = check_position(center_x, center_y)
-    packman_x, packman_y = move_packman(packman_x, packman_y)
-    score = check_collision(score)
+    if moving:
+        packman_x, packman_y = move_packman(packman_x, packman_y)
+    score, powerup, powerup_count, eaten_ghosts = check_collision(score, powerup, powerup_counter, eaten_ghosts)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
