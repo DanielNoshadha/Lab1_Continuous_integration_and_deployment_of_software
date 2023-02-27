@@ -40,10 +40,10 @@ for i in range(1, 5):                              # adding all packman animatio
 
 ghost_assets = Path('assets/ghosts/')             # path to player's assets with pathlib
 
-blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'red.png'), (45, 45))
-pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'pink.png'), (45, 45))
-inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'blue.png'), (45, 45))
-clyde_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'orange.png'), (45, 45))
+blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Red_Ghost.png'), (45, 45))
+pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Pink_Ghost.png'), (45, 45))
+inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Aqua_Ghost.png'), (45, 45))
+clyde_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Orange_Ghost.png'), (45, 45))
 spooked_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'powerup.png'), (45, 45))
 dead_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'dead.png'), (45, 45))
 
