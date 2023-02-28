@@ -87,7 +87,7 @@ ghost_speeds = [2, 2, 2, 2]             # variable for each ghost speed
 game_over = False                       # variable for game over
 game_won = False                        # variable for game won
 
-class Ghost:                            # class Ghost
+class Ghost:                        # class Ghost declaration
     def __init__(self, x_coord, y_coord, target, speed, img, direct, dead, box, id):   # function for initialization
         self.x_pos = x_coord                            # variable for coordinate X
         self.y_pos = y_coord                            # variable for coordinate Y
@@ -103,79 +103,79 @@ class Ghost:                            # class Ghost
         self.turns, self.in_box = self.check_collisions()
         self.rect = self.draw()
 
-    def draw(self):
-        if (not powerup and not self.dead) or (eaten_ghosts[self.id] and powerup and not self.dead):
-            screen.blit(self.img, (self.x_pos, self.y_pos))
-        elif powerup and not self.dead and not eaten_ghosts[self.id]:
-            screen.blit(spooked_img, (self.x_pos, self.y_pos))
-        else:
-            screen.blit(dead_img, (self.x_pos, self.y_pos))
-        ghost_rect = pygame.rect.Rect((self.center_x - 18, self.center_y - 18), (36, 36))
+    def draw(self):                 # function to draw itself
+        if (not powerup and not self.dead) or (eaten_ghosts[self.id] and powerup and not self.dead):    # checking condition to proceed
+            screen.blit(self.img, (self.x_pos, self.y_pos))                                             # show image at set position
+        elif powerup and not self.dead and not eaten_ghosts[self.id]:                                   # checking condition to proceed
+            screen.blit(spooked_img, (self.x_pos, self.y_pos))                                          # show spooked image at set position
+        else:                                                                                           # if no conditions are met
+            screen.blit(dead_img, (self.x_pos, self.y_pos))                                             # show dead image at set position
+        ghost_rect = pygame.rect.Rect((self.center_x - 18, self.center_y - 18), (36, 36))               # adding shot rectangle hitbox
         return ghost_rect
     
-    def check_collisions(self):
+    def check_collisions(self):                         # function to check collision
         # R, L, U, D
-        num1 = ((height - 50) // 32)
-        num2 = (width // 30)
-        num3 = 15
-        self.turns = [False, False, False, False]
+        height_tile = ((height - 50) // 32)                    # variable height
+        width_tile = (width // 30)                             # variable width
+        fudge_factor = 15                                      # variable fudge factor
+        self.turns = [False, False, False, False]              # variable turns
         if 0 < self.center_x // 30 < 29:
-            if level[(self.center_y - num3) // num1][self.center_x // num2] == 9:
+            if level[(self.center_y - fudge_factor) // height_tile][self.center_x // width_tile] == 9:
                 self.turns[2] = True
-            if level[self.center_y // num1][(self.center_x - num3) // num2] < 3 \
-                    or (level[self.center_y // num1][(self.center_x - num3) // num2] == 9 and (
+            if level[self.center_y // height_tile][(self.center_x - fudge_factor) // width_tile] < 3 \
+                    or (level[self.center_y // height_tile][(self.center_x - fudge_factor) // width_tile] == 9 and (
                     self.in_box or self.dead)):
                 self.turns[1] = True
-            if level[self.center_y // num1][(self.center_x + num3) // num2] < 3 \
-                    or (level[self.center_y // num1][(self.center_x + num3) // num2] == 9 and (
+            if level[self.center_y // height_tile][(self.center_x + fudge_factor) // width_tile] < 3 \
+                    or (level[self.center_y // height_tile][(self.center_x + fudge_factor) // width_tile] == 9 and (
                     self.in_box or self.dead)):
                 self.turns[0] = True
-            if level[(self.center_y + num3) // num1][self.center_x // num2] < 3 \
-                    or (level[(self.center_y + num3) // num1][self.center_x // num2] == 9 and (
+            if level[(self.center_y + fudge_factor) // height_tile][self.center_x // width_tile] < 3 \
+                    or (level[(self.center_y + fudge_factor) // height_tile][self.center_x // width_tile] == 9 and (
                     self.in_box or self.dead)):
                 self.turns[3] = True
-            if level[(self.center_y - num3) // num1][self.center_x // num2] < 3 \
-                    or (level[(self.center_y - num3) // num1][self.center_x // num2] == 9 and (
+            if level[(self.center_y - fudge_factor) // height_tile][self.center_x // width_tile] < 3 \
+                    or (level[(self.center_y - fudge_factor) // height_tile][self.center_x // width_tile] == 9 and (
                     self.in_box or self.dead)):
                 self.turns[2] = True
 
             if self.direction == 2 or self.direction == 3:
-                if 12 <= self.center_x % num2 <= 18:
-                    if level[(self.center_y + num3) // num1][self.center_x // num2] < 3 \
-                            or (level[(self.center_y + num3) // num1][self.center_x // num2] == 9 and (
+                if 12 <= self.center_x % width_tile <= 18:
+                    if level[(self.center_y + fudge_factor) // height_tile][self.center_x // width_tile] < 3 \
+                            or (level[(self.center_y + fudge_factor) // height_tile][self.center_x // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[3] = True
-                    if level[(self.center_y - num3) // num1][self.center_x // num2] < 3 \
-                            or (level[(self.center_y - num3) // num1][self.center_x // num2] == 9 and (
+                    if level[(self.center_y - fudge_factor) // height_tile][self.center_x // width_tile] < 3 \
+                            or (level[(self.center_y - fudge_factor) // height_tile][self.center_x // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[2] = True
-                if 12 <= self.center_y % num1 <= 18:
-                    if level[self.center_y // num1][(self.center_x - num2) // num2] < 3 \
-                            or (level[self.center_y // num1][(self.center_x - num2) // num2] == 9 and (
+                if 12 <= self.center_y % height_tile <= 18:
+                    if level[self.center_y // height_tile][(self.center_x - width_tile) // width_tile] < 3 \
+                            or (level[self.center_y // height_tile][(self.center_x - width_tile) // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[1] = True
-                    if level[self.center_y // num1][(self.center_x + num2) // num2] < 3 \
-                            or (level[self.center_y // num1][(self.center_x + num2) // num2] == 9 and (
+                    if level[self.center_y // height_tile][(self.center_x + width_tile) // width_tile] < 3 \
+                            or (level[self.center_y // height_tile][(self.center_x + width_tile) // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[0] = True
 
             if self.direction == 0 or self.direction == 1:
-                if 12 <= self.center_x % num2 <= 18:
-                    if level[(self.center_y + num3) // num1][self.center_x // num2] < 3 \
-                            or (level[(self.center_y + num3) // num1][self.center_x // num2] == 9 and (
+                if 12 <= self.center_x % width_tile <= 18:
+                    if level[(self.center_y + fudge_factor) // height_tile][self.center_x // width_tile] < 3 \
+                            or (level[(self.center_y + fudge_factor) // height_tile][self.center_x // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[3] = True
-                    if level[(self.center_y - num3) // num1][self.center_x // num2] < 3 \
-                            or (level[(self.center_y - num3) // num1][self.center_x // num2] == 9 and (
+                    if level[(self.center_y - fudge_factor) // height_tile][self.center_x // width_tile] < 3 \
+                            or (level[(self.center_y - fudge_factor) // height_tile][self.center_x // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[2] = True
-                if 12 <= self.center_y % num1 <= 18:
-                    if level[self.center_y // num1][(self.center_x - num3) // num2] < 3 \
-                            or (level[self.center_y // num1][(self.center_x - num3) // num2] == 9 and (
+                if 12 <= self.center_y % height_tile <= 18:
+                    if level[self.center_y // height_tile][(self.center_x - fudge_factor) // width_tile] < 3 \
+                            or (level[self.center_y // height_tile][(self.center_x - fudge_factor) // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[1] = True
-                    if level[self.center_y // num1][(self.center_x + num3) // num2] < 3 \
-                            or (level[self.center_y // num1][(self.center_x + num3) // num2] == 9 and (
+                    if level[self.center_y // height_tile][(self.center_x + fudge_factor) // width_tile] < 3 \
+                            or (level[self.center_y // height_tile][(self.center_x + fudge_factor) // width_tile] == 9 and (
                             self.in_box or self.dead)):
                         self.turns[0] = True
         else:
@@ -187,8 +187,8 @@ class Ghost:                            # class Ghost
             self.in_box = False
         return self.turns, self.in_box
 
-    def move_clyde(self):
-        # r, l, u, d
+    def move_clyde(self):           # function for moving clyde
+        # R, L, U, D
         # clyde is going to turn whenever advantageous for pursuit
         if self.direction == 0:
             if self.target[0] > self.x_pos and self.turns[0]:
@@ -320,14 +320,14 @@ class Ghost:                            # class Ghost
                     self.x_pos -= self.speed
                 else:
                     self.y_pos += self.speed
-        if self.x_pos < -30:
-            self.x_pos = 900
-        elif self.x_pos > 900:
-            self.x_pos - 30
+        if self.x_pos > 900:
+            self.x_pos = -47
+        elif self.x_pos < -50:
+            self.x_pos = 897
         return self.x_pos, self.y_pos, self.direction
 
-    def move_blinky(self):
-        # r, l, u, d
+    def move_blinky(self):          # function for moving blinky
+        # R, L. U, D
         # blinky is going to turn whenever colliding with walls, otherwise continue straight
         if self.direction == 0:
             if self.target[0] > self.x_pos and self.turns[0]:
@@ -426,14 +426,14 @@ class Ghost:                            # class Ghost
                     self.x_pos -= self.speed
             elif self.turns[3]:
                 self.y_pos += self.speed
-        if self.x_pos < -30:
-            self.x_pos = 900
-        elif self.x_pos > 900:
-            self.x_pos - 30
+        if self.x_pos > 900:
+            self.x_pos = -47
+        elif self.x_pos < -50:
+            self.x_pos = 897
         return self.x_pos, self.y_pos, self.direction
 
-    def move_inky(self):
-        # r, l, u, d
+    def move_inky(self):        # function for moving inky
+        # R, L, U, D
         # inky turns up or down at any point to pursue, but left and right only on collision
         if self.direction == 0:
             if self.target[0] > self.x_pos and self.turns[0]:
@@ -548,14 +548,14 @@ class Ghost:                            # class Ghost
                     self.x_pos += self.speed
             elif self.turns[3]:
                 self.y_pos += self.speed
-        if self.x_pos < -30:
-            self.x_pos = 900
-        elif self.x_pos > 900:
-            self.x_pos - 30
+        if self.x_pos > 900:
+            self.x_pos = -47
+        elif self.x_pos < -50:
+            self.x_pos = 897
         return self.x_pos, self.y_pos, self.direction
-    def move_pinky(self):
-        # r, l, u, d
-        # inky is going to turn left or right whenever advantageous, but only up or down on collision
+    def move_pinky(self):           # function for moving pinky
+        # R, L, U, D
+        # pinky is going to turn left or right whenever advantageous, but only up or down on collision
         if self.direction == 0:
             if self.target[0] > self.x_pos and self.turns[0]:
                 self.x_pos += self.speed
@@ -672,10 +672,10 @@ class Ghost:                            # class Ghost
                     self.x_pos -= self.speed
                 else:
                     self.y_pos += self.speed
-        if self.x_pos < -30:
-            self.x_pos = 900
-        elif self.x_pos > 900:
-            self.x_pos - 30
+        if self.x_pos > 900:
+            self.x_pos = -47
+        elif self.x_pos < -50:
+            self.x_pos = 897
         return self.x_pos, self.y_pos, self.direction
 
 
@@ -1002,9 +1002,9 @@ while run:
                 (player_circle.colliderect(pinky.rect) and not pinky.dead) or \
                 (player_circle.colliderect(clyde.rect) and not clyde.dead):
             if lives > 0:
-                lives -= 1
-                startup_counter = 0
-                powerup = False
+                lives -= 1                    # lives are reduced by one
+                startup_counter = 0           # startup counter variable
+                powerup = False               
                 power_counter = 0
                 packman_x = 450
                 packman_y = 663
