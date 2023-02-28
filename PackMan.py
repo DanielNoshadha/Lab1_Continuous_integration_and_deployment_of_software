@@ -1,16 +1,16 @@
 #     ---------------- Import Libraries ----------------
-
 import pygame             # importing pygame
 from board import lvl_1   # importing made board lvl_1 from board
-from pathlib import Path
-import copy
+from pathlib import Path  # importing pathlib library for make universal path
+import copy               # importing made board lvl_1 from board
 #     --------------------------------------------------
-pygame.init()             # initialise all pygame modules
 
-#     ----------------   Game Window   -----------------
+pygame.init()             # initialise all pygame module
 
-width = 900                                        # seting width
-height = 950                                       # seting height
+#     -------------------   Game   ---------------------
+
+width = 900                                        # setting width
+height = 950                                       # setting height
 screen = pygame.display.set_mode([width, height])  # making screen by height and width
 timer = pygame.time.Clock()                        # creating to help track time
 fps = 60                                           # frames per second
@@ -28,76 +28,78 @@ packman_y = 663                                    # y position variable
 flicker = False
 
 # R, L, U, D
-turns_allowed = [False, False, False, False]
-direction_command = 0
-packman_speed = 2
-score = 0
-powerup = False
-powerup_counter = 0
-eaten_ghosts = [False, False, False, False]
-moving = False
-startup_counter = 0
-lives = 3
+turns_allowed = [False, False, False, False]       # if turn is allowed then one of indexes will be True
+direction_command = 0                              # direction using numbers
+packman_speed = 2                                  # packman speed variable
+score = 0                                          # score variable
+powerup = False                                    # if there is powerup
+powerup_counter = 0                                # powerup timer variable
+eaten_ghosts = [False, False, False, False]        # if ghost is eaten then one of  indexes will be True
+moving = False                                     # variable to prevent packman from moving
+startup_counter = 0                                # variables to set amount of time before moving
+lives = 5                                          # variables for amount of lives
 
 player_images = []                                 # set of player images
 player_assets = Path('assets/player/')             # path to player's assets with pathlib
+
 for i in range(1, 5):                              # adding all packman animation frames
     player_frames = player_assets / f'{i}.png'     # creating path for [i] file
     player_images.append(pygame.transform.scale(pygame.image.load(player_frames), (45, 45)))  # scaling and adding player image
 
-ghost_assets = Path('assets/ghosts/')             # path to player's assets with pathlib
+ghost_assets = Path('assets/ghosts/')             # path to ghosts assets with pathlib
 
-blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Red_Ghost.png'), (45, 45))
-pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Pink_Ghost.png'), (45, 45))
-inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Aqua_Ghost.png'), (45, 45))
-clyde_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Orange_Ghost.png'), (45, 45))
-spooked_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Spooked_Ghost.png'), (45, 45))
-dead_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'dead.png'), (45, 45))
+blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Red_Ghost.png'), (45, 45))       # blinky image
+pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Pink_Ghost.png'), (45, 45))       # pinky image
+inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Aqua_Ghost.png'), (45, 45))        # inky image
+clyde_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Orange_Ghost.png'), (45, 45))     # clyde image
+spooked_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Spooked_Ghost.png'), (45, 45))  # spooked image
+dead_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'dead.png'), (45, 45))              # dead image
 
-blinky_x = 440
-blinky_y = 438
-blinky_direction = 0
-inky_x = 440
-inky_y = 388
-inky_direction = 2
-pinky_x = 56
-pinky_y = 58
-pinky_direction = 2
-clyde_x = 440
-clyde_y = 438
-clyde_direction = 2
-blinky_dead = False
-inky_dead = False
-clyde_dead = False
-pinky_dead = False
-blinky_box = False
-inky_box = False
-clyde_box = False
-pinky_box = False
+blinky_x = 380                          # blinky position X
+blinky_y = 438                          # blinky position Y
+blinky_direction = 0                    # blinky direction numeric
 
-targets = [(packman_x, packman_y), (packman_x, packman_y), (packman_x, packman_y), (packman_x, packman_y)]
-eaten_ghosts = [False, False, False, False]
-moving = False
-ghost_speeds = [2, 2, 2, 2]
+inky_x = 430                            # inky position X
+inky_y = 438                            # inky position Y
+inky_direction = 2                      # inky direction numeric
 
-startup_counter = 0
-lives = 3
-game_over = False
-game_won = False
+pinky_x = 56                            # pinky position X
+pinky_y = 58                            # pinky position Y
+pinky_direction = 2                     # pinky direction numeric
 
-class Ghost:
-    def __init__(self, x_coord, y_coord, target, speed, img, direct, dead, box, id):
-        self.x_pos = x_coord
-        self.y_pos = y_coord
-        self.center_x = self.x_pos + 22
-        self.center_y = self.y_pos + 22
-        self.target = target
-        self.speed = speed
-        self.img = img
-        self.direction = direct
-        self.dead = dead
-        self.in_box = box
-        self.id = id
+clyde_x = 480                           # clyde position X
+clyde_y = 438                           # clyde position Y
+clyde_direction = 2                     # clyde direction numeric
+
+blinky_dead = False                     # blinky is dead True or False
+inky_dead = False                       # blinky is dead True or False
+clyde_dead = False                      # blinky is dead True or False
+pinky_dead = False                      # blinky is dead True or False
+
+blinky_box = False                      # blinky is in box
+inky_box = False                        # inky is in box
+clyde_box = False                       # clyde is in box
+pinky_box = False                       # pinky is in box
+
+targets = [(packman_x, packman_y), (packman_x, packman_y), (packman_x, packman_y), (packman_x, packman_y)]      # setting target
+ghost_speeds = [2, 2, 2, 2]             # variable for each ghost speed
+
+game_over = False                       # variable for game over
+game_won = False                        # variable for game won
+
+class Ghost:                            # class Ghost
+    def __init__(self, x_coord, y_coord, target, speed, img, direct, dead, box, id):   # function for initialization
+        self.x_pos = x_coord                            # variable for coordinate X
+        self.y_pos = y_coord                            # variable for coordinate Y
+        self.center_x = self.x_pos + 22                 # variable for center X
+        self.center_y = self.y_pos + 22                 # variable for center Y
+        self.target = target                            # variable for target
+        self.speed = speed                              # variable for speed
+        self.img = img                                  # variable for image
+        self.direction = direct                         # variable for direction
+        self.dead = dead                                # variable if ghost is dead
+        self.in_box = box                               # variable if ghost is in box
+        self.id = id                                    # variable for id
         self.turns, self.in_box = self.check_collisions()
         self.rect = self.draw()
 
@@ -936,9 +938,11 @@ while run:
     for i in range(len(level)):
         if 1 in level[i] or 2 in level[i]:
             game_won = False
-
+    center_x = packman_x + 23  # center position of packman in OX
+    center_y = packman_y + 24  # center position of packman in OY
     screen.fill('black')            # background color
     draw_board()                    # drawing game board
+    player_circle = pygame.draw.circle(screen, (0, 0, 0, 128), (center_x, center_y), 20, 2)
     draw_player()                   # drawing player
     draw_stuff()                    # drawing miscellaneous
     blinky = Ghost(blinky_x, blinky_y, targets[0], ghost_speeds[0], blinky_img, blinky_direction, blinky_dead,
@@ -972,10 +976,9 @@ while run:
     if clyde_dead:
         ghost_speeds[3] = 4
 
-    center_x = packman_x + 23       # center position of packman in OX
-    center_y = packman_y + 24       # center position of packman in OY
 
-    player_circle = pygame.draw.circle(screen, (0, 0, 0, 128), (center_x, center_y), 20, 2)
+
+
     turns_allowed = check_position(center_x, center_y)
     if moving:
         packman_x, packman_y = move_packman(packman_x, packman_y)
