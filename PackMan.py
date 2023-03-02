@@ -1004,174 +1004,194 @@ while run:
             if lives > 0:
                 lives -= 1                    # lives are reduced by one
                 startup_counter = 0           # startup counter variable
-                powerup = False               
-                power_counter = 0
-                packman_x = 450
-                packman_y = 663
-                direction = 0
-                direction_command = 0
-                blinky_x = 56
-                blinky_y = 58
-                blinky_direction = 0
-                inky_x = 440
-                inky_y = 388
-                inky_direction = 2
-                pinky_x = 440
-                pinky_y = 438
-                pinky_direction = 2
-                clyde_x = 440
-                clyde_y = 438
-                clyde_direction = 2
-                eaten_ghosts = [False, False, False, False]
-                blinky_dead = False
-                inky_dead = False
-                clyde_dead = False
-                pinky_dead = False
+                powerup = False               # exiting powerup mode
+                power_counter = 0             # making powerup time to null
+
+                packman_x = 450               # x position of packman
+                packman_y = 663               # y position of packman
+                direction = 0                 # direction variable
+                direction_command = 0         # looking to direction indicated by number
+
+                blinky_x = 380                # blinky position X
+                blinky_y = 438                # blinky position Y
+                blinky_direction = 0          # blinky direction numeric
+
+                inky_x = 430                  # inky position X
+                inky_y = 438                  # inky position Y
+                inky_direction = 2            # inky direction numeric
+
+                pinky_x = 56                  # pinky position X
+                pinky_y = 58                  # pinky position Y
+                pinky_direction = 2           # pinky direction numeric
+
+                clyde_x = 480                 # clyde position X
+                clyde_y = 438                 # clyde position Y
+                eaten_ghosts = [False, False, False, False]             # making all ghost alive
+                blinky_dead = False           # making blinky alive
+                inky_dead = False             # making inky alive
+                clyde_dead = False            # making clyde alive
+                pinky_dead = False            # making pinky alive
             else:
-                game_over = True
-                moving = False
+                game_over = True              # if out of lives this variable means game is over
+                moving = False                # you  cannot move
                 startup_counter = 0
     if powerup and player_circle.colliderect(blinky.rect) and eaten_ghosts[0] and not blinky.dead:
         if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            packman_x = 450
-            packman_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghosts = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
+            lives -= 1  # lives are reduced by one
+            startup_counter = 0  # startup counter variable
+            powerup = False  # exiting powerup mode
+            power_counter = 0  # making powerup time to null
+
+            packman_x = 450  # x position of packman
+            packman_y = 663  # y position of packman
+            direction = 0  # direction variable
+            direction_command = 0  # looking to direction indicated by number
+
+            blinky_x = 380  # blinky position X
+            blinky_y = 438  # blinky position Y
+            blinky_direction = 0  # blinky direction numeric
+
+            inky_x = 430  # inky position X
+            inky_y = 438  # inky position Y
+            inky_direction = 2  # inky direction numeric
+
+            pinky_x = 56  # pinky position X
+            pinky_y = 58  # pinky position Y
+            pinky_direction = 2  # pinky direction numeric
+
+            clyde_x = 480  # clyde position X
+            clyde_y = 438  # clyde position Y
+            eaten_ghosts = [False, False, False, False]  # making all ghost alive
+            blinky_dead = False  # making blinky alive
+            inky_dead = False  # making inky alive
+            clyde_dead = False  # making clyde alive
+            pinky_dead = False  # making pinky alive
         else:
-            game_over = True
-            moving = False
+            game_over = True  # if out of lives this variable means game is over
+            moving = False  # you  cannot move
             startup_counter = 0
     if powerup and player_circle.colliderect(inky.rect) and eaten_ghosts[1] and not inky.dead:
         if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            packman_x = 450
-            packman_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghosts = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
+            lives -= 1  # lives are reduced by one
+            startup_counter = 0  # startup counter variable
+            powerup = False  # exiting powerup mode
+            power_counter = 0  # making powerup time to null
+
+            packman_x = 450  # x position of packman
+            packman_y = 663  # y position of packman
+            direction = 0  # direction variable
+            direction_command = 0  # looking to direction indicated by number
+
+            blinky_x = 380  # blinky position X
+            blinky_y = 438  # blinky position Y
+            blinky_direction = 0  # blinky direction numeric
+
+            inky_x = 430  # inky position X
+            inky_y = 438  # inky position Y
+            inky_direction = 2  # inky direction numeric
+
+            pinky_x = 56  # pinky position X
+            pinky_y = 58  # pinky position Y
+            pinky_direction = 2  # pinky direction numeric
+
+            clyde_x = 480  # clyde position X
+            clyde_y = 438  # clyde position Y
+            eaten_ghosts = [False, False, False, False]  # making all ghost alive
+            blinky_dead = False  # making blinky alive
+            inky_dead = False  # making inky alive
+            clyde_dead = False  # making clyde alive
+            pinky_dead = False  # making pinky alive
         else:
-            game_over = True
-            moving = False
+            game_over = True  # if out of lives this variable means game is over
+            moving = False  # you  cannot move
             startup_counter = 0
     if powerup and player_circle.colliderect(pinky.rect) and eaten_ghosts[2] and not pinky.dead:
         if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            packman_x = 450
-            packman_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghosts = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
+            lives -= 1  # lives are reduced by one
+            startup_counter = 0  # startup counter variable
+            powerup = False  # exiting powerup mode
+            power_counter = 0  # making powerup time to null
+
+            packman_x = 450  # x position of packman
+            packman_y = 663  # y position of packman
+            direction = 0  # direction variable
+            direction_command = 0  # looking to direction indicated by number
+
+            blinky_x = 380  # blinky position X
+            blinky_y = 438  # blinky position Y
+            blinky_direction = 0  # blinky direction numeric
+
+            inky_x = 430  # inky position X
+            inky_y = 438  # inky position Y
+            inky_direction = 2  # inky direction numeric
+
+            pinky_x = 56  # pinky position X
+            pinky_y = 58  # pinky position Y
+            pinky_direction = 2  # pinky direction numeric
+
+            clyde_x = 480  # clyde position X
+            clyde_y = 438  # clyde position Y
+            eaten_ghosts = [False, False, False, False]  # making all ghost alive
+            blinky_dead = False  # making blinky alive
+            inky_dead = False  # making inky alive
+            clyde_dead = False  # making clyde alive
+            pinky_dead = False  # making pinky alive
         else:
-            game_over = True
-            moving = False
+            game_over = True  # if out of lives this variable means game is over
+            moving = False  # you  cannot move
             startup_counter = 0
     if powerup and player_circle.colliderect(clyde.rect) and eaten_ghosts[3] and not clyde.dead:
         if lives > 0:
-            powerup = False
-            power_counter = 0
-            lives -= 1
-            startup_counter = 0
-            packman_x = 450
-            packman_y = 663
-            direction = 0
-            direction_command = 0
-            blinky_x = 56
-            blinky_y = 58
-            blinky_direction = 0
-            inky_x = 440
-            inky_y = 388
-            inky_direction = 2
-            pinky_x = 440
-            pinky_y = 438
-            pinky_direction = 2
-            clyde_x = 440
-            clyde_y = 438
-            clyde_direction = 2
-            eaten_ghosts = [False, False, False, False]
-            blinky_dead = False
-            inky_dead = False
-            clyde_dead = False
-            pinky_dead = False
+            lives -= 1  # lives are reduced by one
+            startup_counter = 0  # startup counter variable
+            powerup = False  # exiting powerup mode
+            power_counter = 0  # making powerup time to null
+
+            packman_x = 450  # x position of packman
+            packman_y = 663  # y position of packman
+            direction = 0  # direction variable
+            direction_command = 0  # looking to direction indicated by number
+
+            blinky_x = 380  # blinky position X
+            blinky_y = 438  # blinky position Y
+            blinky_direction = 0  # blinky direction numeric
+
+            inky_x = 430  # inky position X
+            inky_y = 438  # inky position Y
+            inky_direction = 2  # inky direction numeric
+
+            pinky_x = 56  # pinky position X
+            pinky_y = 58  # pinky position Y
+            pinky_direction = 2  # pinky direction numeric
+
+            clyde_x = 480  # clyde position X
+            clyde_y = 438  # clyde position Y
+            eaten_ghosts = [False, False, False, False]  # making all ghost alive
+            blinky_dead = False  # making blinky alive
+            inky_dead = False  # making inky alive
+            clyde_dead = False  # making clyde alive
+            pinky_dead = False  # making pinky alive
         else:
-            game_over = True
-            moving = False
+            game_over = True  # if out of lives this variable means game is over
+            moving = False  # you  cannot move
             startup_counter = 0
 
     if powerup and player_circle.colliderect(blinky.rect) and not blinky.dead and not eaten_ghosts[0]:
-        blinky_dead = True
-        eaten_ghosts[0] = True
-        score += (2 ** eaten_ghosts.count(True)) * 100
+        blinky_dead = True                                  # blinky is dead
+        eaten_ghosts[0] = True                              # 0 index changing to True, means ghost is eaten
+        score += (2 ** eaten_ghosts.count(True)) * 100      # adding score
     if powerup and player_circle.colliderect(inky.rect) and not inky.dead and not eaten_ghosts[1]:
-        inky_dead = True
-        eaten_ghosts[1] = True
-        score += (2 ** eaten_ghosts.count(True)) * 100
+        inky_dead = True                                    # inky is dead
+        eaten_ghosts[1] = True                              # 1 index changing to True, means ghost is eaten
+        score += (2 ** eaten_ghosts.count(True)) * 100      # adding score
     if powerup and player_circle.colliderect(pinky.rect) and not pinky.dead and not eaten_ghosts[2]:
-        pinky_dead = True
-        eaten_ghosts[2] = True
-        score += (2 ** eaten_ghosts.count(True)) * 100
+        pinky_dead = True                                   # pinky is dead
+        eaten_ghosts[2] = True                              # 2 index changing to True, means ghost is eaten
+        score += (2 ** eaten_ghosts.count(True)) * 100      # adding score
     if powerup and player_circle.colliderect(clyde.rect) and not clyde.dead and not eaten_ghosts[3]:
-        clyde_dead = True
-        eaten_ghosts[3] = True
-        score += (2 ** eaten_ghosts.count(True)) * 100
+        clyde_dead = True                                   # clyde is dead
+        eaten_ghosts[3] = True                              # 3 index changing to True, means ghost is eaten
+        score += (2 ** eaten_ghosts.count(True)) * 100      # adding score
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
