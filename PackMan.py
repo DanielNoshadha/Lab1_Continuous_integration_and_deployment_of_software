@@ -37,7 +37,7 @@ powerup_counter = 0                                # powerup timer variable
 eaten_ghosts = [False, False, False, False]        # if ghost is eaten then one of  indexes will be True
 moving = False                                     # variable to prevent packman from moving
 startup_counter = 0                                # variables to set amount of time before moving
-lives = 5                                          # variables for amount of lives
+lives = 3                                          # variables for amount of lives
 
 player_images = []                                 # set of player images
 player_assets = Path('assets/player/')             # path to player's assets with pathlib
