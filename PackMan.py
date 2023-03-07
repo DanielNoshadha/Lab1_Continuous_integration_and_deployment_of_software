@@ -25,7 +25,7 @@ direction = 0                                      # direction variable
 counter = 0                                        # counter variable
 packman_x = 450                                    # x position variable
 packman_y = 663                                    # y position variable
-flicker = False
+flicker = False                                    # big dots flickering
 
 # R, L, U, D
 turns_allowed = [False, False, False, False]       # if turn is allowed then one of indexes will be True
@@ -48,6 +48,7 @@ for i in range(1, 5):                              # adding all packman animatio
 
 ghost_assets = Path('assets/ghosts/')             # path to ghosts assets with pathlib
 
+# scaling and adding ghost images
 blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Red_Ghost.png'), (45, 45))       # blinky image
 pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Pink_Ghost.png'), (45, 45))       # pinky image
 inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Aqua_Ghost.png'), (45, 45))        # inky image
@@ -553,6 +554,7 @@ class Ghost:                        # class Ghost declaration
         elif self.x_pos < -50:
             self.x_pos = 897
         return self.x_pos, self.y_pos, self.direction
+    
     def move_pinky(self):           # function for moving pinky
         # R, L, U, D
         # pinky is going to turn left or right whenever advantageous, but only up or down on collision
@@ -793,9 +795,11 @@ def check_collision(score, powerup, powerup_counter, eaten_ghosts):
     height_tile = ((height - 50) // 32)     # height of a tile
     width_tile = (width // 30)              # width of a tile
     if 0 < packman_x < 870:
+        # eating small dots
         if level[center_y // height_tile][center_x // width_tile] == 1:
             level[center_y // height_tile][center_x // width_tile] = 0
             score += 10
+        # eating big dots and getting powerup
         if level[center_y // height_tile][center_x // width_tile] == 2:
             level[center_y // height_tile][center_x // width_tile] = 0
             score += 100
@@ -819,9 +823,8 @@ def move_packman(packman_x, packman_y):
 
 # ---------------- Draw stuff ----------------
 def draw_stuff():
-    '''
-    shows score at the bottom left corner, blue circle if the powerup is active
-    '''
+    #shows score at the bottom left corner, blue circle if the powerup is active
+    
     score_text = font.render(f'Score: {score}', True, 'white')
     screen.blit(score_text, (10, 920))
     if powerup:
@@ -1033,6 +1036,7 @@ while run:
                 pinky_dead = False            # making pinky alive
             else:
                 game_over = True              # if out of lives this variable means game is over
+                # run = False
                 moving = False                # you  cannot move
                 startup_counter = 0
     if powerup and player_circle.colliderect(blinky.rect) and eaten_ghosts[0] and not blinky.dead:
@@ -1205,7 +1209,7 @@ while run:
                 direction_command = 2
             if event.key == pygame.K_DOWN:
                 direction_command = 3
-
+            # if dead press spacebar to restart
             if event.key == pygame.K_SPACE and (game_over or game_won):
                 powerup = False
                 power_counter = 0
