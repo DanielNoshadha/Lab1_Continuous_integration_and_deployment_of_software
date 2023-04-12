@@ -11,8 +11,8 @@ pygame.init()             # initialise all pygame module
 
 width = 900                                        # setting width
 height = 950                                       # setting height
-screen = pygame.display.set_mode([width, height])  # making screen
-timer = pygame.time.Clock()                        # creating to track time
+screen = pygame.display.set_mode([width, height])  # making screen by height and width
+timer = pygame.time.Clock()                        # creating to help track time
 fps = 60                                           # frames per second
 font = pygame.font.SysFont('calibri', 20)          # setting font
 
@@ -28,13 +28,13 @@ packman_y = 663                                    # y position variable
 flicker = False                                    # big dots flickering
 
 # R, L, U, D
-turns_allowed = [False, False, False, False]
+turns_allowed = [False, False, False, False]       # if turn is allowed then one of indexes will be True
 direction_command = 0                              # direction using numbers
 packman_speed = 2                                  # packman speed variable
 score = 0                                          # score variable
 powerup = False                                    # if there is powerup
 powerup_counter = 0                                # powerup timer variable
-eaten_ghosts = [False, False, False, False]
+eaten_ghosts = [False, False, False, False]        # if ghost is eaten then one of  indexes will be True
 moving = False                                     # variable to prevent packman from moving
 startup_counter = 0                                # variables to set amount of time before moving
 lives = 3                                          # variables for amount of lives
@@ -44,17 +44,17 @@ player_assets = Path('assets/player/')             # path to player's assets wit
 
 for i in range(1, 5):                              # adding all packman animation frames
     player_frames = player_assets / f'{i}.png'     # creating path for [i] file
-    player_images.append(pygame.transform.scale(pygame.image.load(player_frames), (45, 45)))
+    player_images.append(pygame.transform.scale(pygame.image.load(player_frames), (45, 45)))  # scaling and adding player image
 
 ghost_assets = Path('assets/ghosts/')             # path to ghosts assets with pathlib
 
 # scaling and adding ghost images
-blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Red_Ghost.png'), (45, 45))       # blinky image
-pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Pink_Ghost.png'), (45, 45))       # pinky image
-inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Aqua_Ghost.png'), (45, 45))        # inky image
-clyde_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Orange_Ghost.png'), (45, 45))     # clyde image
-spooked_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'Spooked_Ghost.png'), (45, 45))  # spooked image
-dead_img = pygame.transform.scale(pygame.image.load(ghost_assets / f'dead.png'), (45, 45))              # dead image
+blinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / 'Red_Ghost.png'), (45, 45))       # blinky image
+pinky_img = pygame.transform.scale(pygame.image.load(ghost_assets / 'Pink_Ghost.png'), (45, 45))       # pinky image
+inky_img = pygame.transform.scale(pygame.image.load(ghost_assets / 'Aqua_Ghost.png'), (45, 45))        # inky image
+clyde_img = pygame.transform.scale(pygame.image.load(ghost_assets / 'Orange_Ghost.png'), (45, 45))     # clyde image
+spooked_img = pygame.transform.scale(pygame.image.load(ghost_assets / 'Spooked_Ghost.png'), (45, 45))  # spooked image
+dead_img = pygame.transform.scale(pygame.image.load(ghost_assets / 'dead.png'), (45, 45))              # dead image
 
 blinky_x = 380                          # blinky position X
 blinky_y = 438                          # blinky position Y
@@ -88,6 +88,7 @@ ghost_speeds = [2, 2, 2, 2]             # variable for each ghost speed
 game_over = False                       # variable for game over
 game_won = False                        # variable for game won
 
+
 class Ghost:                        # class Ghost declaration
     def __init__(self, x_coord, y_coord, target, speed, img, direct, dead, box, id):   # function for initialization
         self.x_pos = x_coord                            # variable for coordinate X
@@ -113,7 +114,7 @@ class Ghost:                        # class Ghost declaration
             screen.blit(dead_img, (self.x_pos, self.y_pos))                                             # show dead image at set position
         ghost_rect = pygame.rect.Rect((self.center_x - 18, self.center_y - 18), (36, 36))               # adding shot rectangle hitbox
         return ghost_rect
-    
+
     def check_collisions(self):                         # function to check collision
         # R, L, U, D
         height_tile = ((height - 50) // 32)                    # variable height
@@ -554,7 +555,7 @@ class Ghost:                        # class Ghost declaration
         elif self.x_pos < -50:
             self.x_pos = 897
         return self.x_pos, self.y_pos, self.direction
-    
+
     def move_pinky(self):           # function for moving pinky
         # R, L, U, D
         # pinky is going to turn left or right whenever advantageous, but only up or down on collision
@@ -696,31 +697,42 @@ def draw_board():
 
             # drawing lines
             if level[i][j] == 3:   # if element in board equals 3 then as we already described in file for us we draw vertical boarder
-                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile), (j * width_tile + (0.5 * width_tile), i * height_tile + height_tile), 3) # vertical line
+
+                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile), (j * width_tile + (0.5 * width_tile), i * height_tile + height_tile), 3)
 
             if level[i][j] == 4:   # if element in board equals 4 then as we already described in file for us we draw horizontal boarder
-                pygame.draw.line(screen, color_1, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3) # horizontal line
+                # horizontal line
+                pygame.draw.line(screen, color_1, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3)
 
             # drawing corners
             if level[i][j] == 5:   # if element in board equals 5 then as we already described in file for us we draw corner from left to down
-                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), (j * width_tile + (0.5 * width_tile), i * height_tile + height_tile), 3) # vertical part
-                pygame.draw.line(screen, color_1, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), 3) # horizontal part
+                # vertical part
+                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), (j * width_tile + (0.5 * width_tile), i * height_tile + height_tile), 3)
+                # horizontal part
+                pygame.draw.line(screen, color_1, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), 3)
 
             if level[i][j] == 6:   # if element in board equals 6 then as we already described in file for us we draw corner from down to right
-                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), (j * width_tile + (0.5 * width_tile), i * height_tile + height_tile), 3) # vertical part
-                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3) # horizontal line
+                # vertical part
+                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), (j * width_tile + (0.5 * width_tile), i * height_tile + height_tile), 3)
+                # horizontal line
+                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3)
 
             if level[i][j] == 7:   # if element in board equals 7 then as we already described in file for us we draw corner from up to right
-                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile), (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), 3) # vertical part
-                pygame.draw.line(screen, color_1, (j * width_tile + (width_tile * 0.5), i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3) # horizontal part
+                # vertical part
+                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile), (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), 3)
+                # horizontal part
+                pygame.draw.line(screen, color_1, (j * width_tile + (width_tile * 0.5), i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3)
 
             if level[i][j] == 8:   # if element in board equals 8 then as we already described in file for us we draw corner from left to up
-                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile), (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), 3) # vertical part
-                pygame.draw.line(screen, color_1, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + (width_tile * 0.5), i * height_tile + (0.5 * height_tile)), 3) # horizontal part
+                # vertical part
+                pygame.draw.line(screen, color_1, (j * width_tile + (0.5 * width_tile), i * height_tile), (j * width_tile + (0.5 * width_tile), i * height_tile + (0.5 * height_tile)), 3)
+                # horizontal part
+                pygame.draw.line(screen, color_1, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + (width_tile * 0.5), i * height_tile + (0.5 * height_tile)), 3)
 
             # drawing gates
             if level[i][j] == 9:   # if element in board equals 9 then as we already described in file for us we draw gates for ghosts
                 pygame.draw.line(screen, color_2, (j * width_tile, i * height_tile + (0.5 * height_tile)), (j * width_tile + width_tile, i * height_tile + (0.5 * height_tile)), 3)
+
 
 # ---------------- Drawing player ----------------
 def draw_player():
@@ -736,6 +748,7 @@ def draw_player():
         screen.blit(pygame.transform.rotate(player_images[counter // 5], 90), (packman_x, packman_y))   # placing PacMan in such position and rotate 90 degrees
     elif direction == 3:  # PacMan looks down,
         screen.blit(pygame.transform.rotate(player_images[counter // 5], -90), (packman_x, packman_y))   # placing PacMan in such position and rotate -90 degrees
+
 
 # ---------------- Checking position ----------------
 def check_position(centerx, centery):
@@ -790,6 +803,7 @@ def check_position(centerx, centery):
 
     return turns
 
+
 # ---------------- Check collision ----------------
 def check_collision(score, powerup, powerup_counter, eaten_ghosts):
     height_tile = ((height - 50) // 32)     # height of a tile
@@ -808,6 +822,7 @@ def check_collision(score, powerup, powerup_counter, eaten_ghosts):
             eaten_ghosts = [False, False, False, False]
     return score, powerup, powerup_counter, eaten_ghosts
 
+
 # ---------------- Move packman ----------------
 def move_packman(packman_x, packman_y):
     # R, L, U, D
@@ -821,16 +836,18 @@ def move_packman(packman_x, packman_y):
         packman_y += packman_speed
     return packman_x, packman_y
 
+
 # ---------------- Draw stuff ----------------
 def draw_stuff():
-    #shows score at the bottom left corner, blue circle if the powerup is active
-    
+    # shows score at the bottom left corner, blue circle if the powerup is active
+
     score_text = font.render(f'Score: {score}', True, 'white')
     screen.blit(score_text, (10, 920))
     if powerup:
         pygame.draw.circle(screen, 'blue', (140, 930), 15)
     for i in range(lives):
         screen.blit(pygame.transform.scale(player_images[0], (30, 30)), (650 + i * 40, 915))
+
 
 # ---------------- Get targets ----------------
 def get_targets(blink_x, blink_y, ink_x, ink_y, pink_x, pink_y, clyd_x, clyd_y):
@@ -978,9 +995,6 @@ while run:
         ghost_speeds[2] = 4
     if clyde_dead:
         ghost_speeds[3] = 4
-
-
-
 
     turns_allowed = check_position(center_x, center_y)
     if moving:
