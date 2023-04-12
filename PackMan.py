@@ -11,8 +11,8 @@ pygame.init()             # initialise all pygame module
 
 width = 900                                        # setting width
 height = 950                                       # setting height
-screen = pygame.display.set_mode([width, height])  # making screen by height and width
-timer = pygame.time.Clock()                        # creating to help track time
+screen = pygame.display.set_mode([width, height])  # making screen
+timer = pygame.time.Clock()                        # creating to track time
 fps = 60                                           # frames per second
 font = pygame.font.SysFont('calibri', 20)          # setting font
 
@@ -28,13 +28,13 @@ packman_y = 663                                    # y position variable
 flicker = False                                    # big dots flickering
 
 # R, L, U, D
-turns_allowed = [False, False, False, False]       # if turn is allowed then one of indexes will be True
+turns_allowed = [False, False, False, False]
 direction_command = 0                              # direction using numbers
 packman_speed = 2                                  # packman speed variable
 score = 0                                          # score variable
 powerup = False                                    # if there is powerup
 powerup_counter = 0                                # powerup timer variable
-eaten_ghosts = [False, False, False, False]        # if ghost is eaten then one of  indexes will be True
+eaten_ghosts = [False, False, False, False]
 moving = False                                     # variable to prevent packman from moving
 startup_counter = 0                                # variables to set amount of time before moving
 lives = 3                                          # variables for amount of lives
@@ -44,7 +44,7 @@ player_assets = Path('assets/player/')             # path to player's assets wit
 
 for i in range(1, 5):                              # adding all packman animation frames
     player_frames = player_assets / f'{i}.png'     # creating path for [i] file
-    player_images.append(pygame.transform.scale(pygame.image.load(player_frames), (45, 45)))  # scaling and adding player image
+    player_images.append(pygame.transform.scale(pygame.image.load(player_frames), (45, 45)))
 
 ghost_assets = Path('assets/ghosts/')             # path to ghosts assets with pathlib
 
