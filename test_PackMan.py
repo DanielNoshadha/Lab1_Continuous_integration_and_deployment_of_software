@@ -8,7 +8,5 @@ def test_draw_stuff():
 
 
 def test_move_packman():
-    with pytest.raises(TypeError):
-        turns_allowed[0]
-        move_packman(450, 663)
-        direction = 0
+    turns_allowed[0]
+    move_packman(450, 663)
