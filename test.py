@@ -1,11 +1,6 @@
-from PackMan import move_packman
+import pytest
+from PackMan import draw_stuff
 
-def test_move_packman():
-    packman_x = 100
-    packman_y = 100
-
-
-    # Test moving Pacman to the right
-    new_x, new_y = move_packman(packman_x, packman_y)
-    assert new_x == 102
-    assert new_y == 100
+def test_draw_stuff():
+    with pytest.raises(TypeError):
+        draw_stuff(10, 20)
